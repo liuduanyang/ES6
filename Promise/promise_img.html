@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body> 
+<script type="text/javascript">
+    function loadImageAsync(url){
+        return new Promise(function(resolve,reject){
+            var image=new Image();
+            image.onload=function(){
+                resolve(image);
+            };
+            image.onerror=function(){
+                reject(new Error('Could not load image at'+url));
+            };
+            image.src=url;
+        });
+    }
+
+    loadImageAsync('https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4250696313,681315509&fm=27&gp=0.jpg').then(function(image){
+        document.body.appendChild(image);
+    },function(err){
+        console.log(err);
+    });
+</script>
+</body>
+</html> 
