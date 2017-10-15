@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body> 
+<script type="text/javascript">
+            var a=+new Date();          //计时器 开始程序时的时间
+
+    var p1=new Promise(function(resolve,reject){
+        setTimeout(function(){
+            console.log("p1");
+            resolve('p1');             //步骤2.捕获对象已改为p1 触发resolve回调函数 即then()里面的函数
+
+            b=+new Date();         //计时器 执行到b的时间
+        },3000);
+    });
+
+    var p2=new Promise(function(resolve,reject){
+        setTimeout(function(){
+            resolve(p1);               //步骤1.到此处 由于p1是另一个Promise对象 then和catch捕获的对象改为p1
+            resolve('success');
+        },1000);
+    });
+
+    p2                                 //只要调用resolve的回调函数(then)或调用reject的回调函数(catch)中的一个程序就结束了(这段代码就结束了)
+        .then(function(result){
+            console.log(result);
+            console.log(b-a);          //计时器 执行开始到触发then的时间
+        })
+        .catch(function(error){        //与then(Null,function(error){...})效果相同
+            console.log('p1 error');   //与.then(function(result){},function(error){})效果也相同
+            console.log(error);        //三种写法效果都相同
+        });
+        // p1
+        // p1
+</script>
+</body>
+</html> 
